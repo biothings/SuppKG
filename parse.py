@@ -17,9 +17,9 @@ def get_nodes_key(val):
 print(get_nodes_key('C0151763'))
 print(nodes[get_nodes_key('DC1029148')])
 
-json = []
+data = []
 
-for i in range(3):
+for i in range(len(links)):
     source_key = get_nodes_key(links[i]["source"])
     target_key = get_nodes_key(links[i]["target"])
     entries = {}
@@ -32,7 +32,9 @@ for i in range(3):
     entries["object"] = {"umls": links[i]["target"],
                          "name": nodes[target_key]["terms"][0],
                          "semtypes": nodes[target_key]["semtypes"]}
+    entries["predicate"] = links[i]["key"]
 
-    json.append(entries)
+    data.append(entries)
 
-print(json)
+with open('data.json', 'w') as f:
+    json.dump(data, f)
