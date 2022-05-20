@@ -2,26 +2,25 @@ import json
 
 f = open('supp_kg.json')
 
-data = json.load(f)
+original_data = json.load(f)
 
-links = data["links"]
-nodes = data["nodes"]
+links = original_data["links"]
+nodes = original_data["nodes"]
 
 
-def get_nodes_key(val):
+#finds index of node corresponding to original source and target
+def get_nodes_index(val):
     for i in nodes:
         if i["id"] == val:
             return nodes.index(i)
 
 
-print(get_nodes_key('C0151763'))
-print(nodes[get_nodes_key('DC1029148')])
-
-data = []
+parsed_data = {"relations": []}
 
 for i in range(len(links)):
-    source_key = get_nodes_key(links[i]["source"])
-    target_key = get_nodes_key(links[i]["target"])
+    source_key = get_nodes_index(links[i]["source"])
+    target_key = get_nodes_index(links[i]["target"])
+    
     entries = {}
     entries["_id"] = links[i]["source"]+"_" + \
         links[i]["target"]+"_"+links[i]["key"]
@@ -34,7 +33,8 @@ for i in range(len(links)):
                          "semtypes": nodes[target_key]["semtypes"]}
     entries["predicate"] = links[i]["key"]
 
-    data.append(entries)
+    parsed_data["relations"].append(entries)
 
+#write parsed data to data.json 
 with open('data.json', 'w') as f:
-    json.dump(data, f)
+    json.dump(parsed_data, f)
