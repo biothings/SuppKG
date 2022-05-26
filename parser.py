@@ -2,6 +2,7 @@ import json
 
 
 def load_data(data_folder):
+    # load original data
     with open('supp_kg.json') as f:
         original_data = json.load(f)
 
@@ -14,6 +15,7 @@ def load_data(data_folder):
     for node in nodes:
         nodes_ids[node['id']] = nodes.index(node)
 
+    # finds index of node corresponding to original source and target
     def get_nodes_index(val):
         return nodes_ids[val]
 
@@ -40,10 +42,8 @@ def load_data(data_folder):
     return parsed_data
 
 
-final_data = load_data('.')
+final_data = load_data('')
 
 # write parsed data to data.json
-with open('test.json', 'w') as f:
+with open('data.json', 'w') as f:
     json.dump(final_data, f)
-
-print('done!')
