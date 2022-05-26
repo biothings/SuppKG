@@ -3,7 +3,7 @@ import json
 
 def load_data(data_folder):
     # load original data
-    with open('supp_kg.json') as f:
+    with open(data_folder + '/' + 'supp_kg.json') as f:
         original_data = json.load(f)
 
     links = original_data["links"]
@@ -40,10 +40,3 @@ def load_data(data_folder):
         parsed_data["relations"].append(entries)
 
     return parsed_data
-
-
-final_data = load_data('')
-
-# write parsed data to data.json
-with open('data.json', 'w') as f:
-    json.dump(final_data, f)
