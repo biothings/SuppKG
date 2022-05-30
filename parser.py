@@ -15,28 +15,24 @@ def load_data(data_folder):
     for node in nodes:
         nodes_ids[node['id']] = nodes.index(node)
 
-    # finds index of node corresponding to original source and target
+    # looks index of node corresponding to original source and target
     def get_nodes_index(val):
         return nodes_ids[val]
-
-    parsed_data = {"relations": []}
 
     for link in links:
         source_key = get_nodes_index(link["source"])
         target_key = get_nodes_index(link["target"])
 
-        entries = {}
-        entries["_id"] = link["source"]+"_" + \
+        parsed_data = {}
+        parsed_data["_id"] = link["source"]+"_" + \
             link["target"]+"_"+link["key"]
-        entries["subject"] = {"umls": link["source"],
-                              "name": nodes[source_key]["terms"][0],
-                              "semtypes": nodes[source_key]["semtypes"]}
-        entries["relation"] = link["relations"]
-        entries["object"] = {"umls": link["target"],
-                             "name": nodes[target_key]["terms"][0],
-                             "semtypes": nodes[target_key]["semtypes"]}
-        entries["predicate"] = link["key"]
+        parsed_data["subject"] = {"umls": link["source"],
+                                  "name": nodes[source_key]["terms"][0],
+                                  "semtypes": nodes[source_key]["semtypes"]}
+        parsed_data["relation"] = link["relations"]
+        parsed_data["object"] = {"umls": link["target"],
+                                 "name": nodes[target_key]["terms"][0],
+                                 "semtypes": nodes[target_key]["semtypes"]}
+        parsed_data["predicate"] = link["key"]
 
-        parsed_data["relations"].append(entries)
-
-    return parsed_data
+        yield parsed_data
