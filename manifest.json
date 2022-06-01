@@ -4,7 +4,7 @@
         "url": "https://github.com/zhang-informatics/SemRep_DS"
     },
     "dumper" : {
-        "data_url" : ["https://github.com/zhang-informatics/SemRep_DS/blob/main/SuppKG/supp_kg.json.tar.bz2"],
+        "data_url" : ["https://github.com/zhang-informatics/SemRep_DS/raw/main/SuppKG/supp_kg.json.tar.bz2"],
         "uncompress" : true,
         "release": "version:get_release"
     },
