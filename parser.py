@@ -1,38 +1,49 @@
 import json
+import os
+
+
+# create dictionary with nodes id as key and index as value
+def create_id_index_map(nodes: list) -> dict:
+    id_index_map = {}
+    for index, node in enumerate(nodes):
+        id_index_map[node['id']] = index
+    return id_index_map
+
+
+# create document id from a link object
+def create_doc_id(link: dict) -> str:
+    return link["source"] + "_" + link["target"] + "_" + link["key"]
 
 
 def load_data(data_folder):
     # load original data
-    with open(data_folder + '/' + 'supp_kg.json') as f:
+    with open(os.path.join(data_folder, 'supp_kg.json')) as f:
         original_data = json.load(f)
 
     links = original_data["links"]
     nodes = original_data["nodes"]
 
-    # create dictionary with nodes id as key and index as value
-    nodes_ids = {}
-
-    for node in nodes:
-        nodes_ids[node['id']] = nodes.index(node)
-
-    # looks index of node corresponding to original source and target
-    def get_nodes_index(val):
-        return nodes_ids[val]
+    node_id_index_map = create_id_index_map(nodes)
 
     for link in links:
-        source_key = get_nodes_index(link["source"])
-        target_key = get_nodes_index(link["target"])
+        source_index = node_id_index_map[link["source"]]
+        target_index = node_id_index_map[link["target"]]
+        source_node = nodes[source_index]
+        target_node = nodes[target_index]
 
-        parsed_data = {}
-        parsed_data["_id"] = link["source"]+"_" + \
-            link["target"]+"_"+link["key"]
-        parsed_data["subject"] = {"umls": link["source"],
-                                  "name": nodes[source_key]["terms"][0],
-                                  "semtypes": nodes[source_key]["semtypes"]}
-        parsed_data["relation"] = link["relations"]
-        parsed_data["object"] = {"umls": link["target"],
-                                 "name": nodes[target_key]["terms"][0],
-                                 "semtypes": nodes[target_key]["semtypes"]}
-        parsed_data["predicate"] = link["key"]
+        doc = {}
+        doc["_id"] = create_doc_id(link)
+        doc["subject"] = {
+            "umls": link["source"],
+            "name": source_node["terms"][0],
+            "semtypes": source_node["semtypes"]
+        }
+        doc["object"] = {
+            "umls": link["target"],
+            "name": target_node["terms"][0],
+            "semtypes": target_node["semtypes"]
+        }
+        doc["relation"] = link["relations"]
+        doc["predicate"] = link["key"]
 
-        yield parsed_data
+        yield doc
