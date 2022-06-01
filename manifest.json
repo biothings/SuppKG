@@ -1,10 +1,14 @@
 {
     "version": "0.2",
+    "__metadata__": {
+        "url": "https://github.com/zhang-informatics/SemRep_DS"
+    },
     "dumper" : {
         "data_url" : ["https://github.com/zhang-informatics/SemRep_DS/blob/main/SuppKG/supp_kg.json.tar.bz2"],
         "uncompress" : true
     },
     "uploader" : {
-        "parser" : "parser:load_data"
+        "parser" : "parser:load_data",
+        "on_duplicates": "error"
     }
 }
