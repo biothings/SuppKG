@@ -1,6 +1,6 @@
 # SuppKG
 
-This is the repo for SuppKG endpoints of Translator KP APIs.
+This is the plugin repo for SuppKG endpoints of Translator KP APIs.
 
 SuppKG contains a variety of edges for Dietary Supplements.
 
